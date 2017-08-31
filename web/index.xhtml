@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+
+    <h:body style="background: #990099">
+
+        <p:layout style="min-width:400px;min-height:800px;">
+
+            <p:layoutUnit position="north" resizable="true" size="100" minSize="40" maxSize="200" style="background: #990099; border: 0px; text-align: center;">
+                <h2>INWIApp - Extract From PDF File</h2>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" style="position: relative;
+                          height: auto;
+                          min-height: 100% !important; background: #990099; border: 0px;">
+                <p:stack icon="/folder.png" expanded="true">
+                    <p:menuitem value="Doc" icon="/doc.png" url="word.xhtml"/>
+                    <p:menuitem value="PDF" icon="/pdf.png" url="#"/>
+                </p:stack>
+                <h:form>
+                    <h:panelGrid columns="3" cellpadding="5" >
+                        <p:inputText id="txt" value="#{initialInformation.path}" placeholder="tapez" style="width: 600px;" />
+                        <p:commandButton value="Submit" update="blo" icon="ui-icon-check" />
+                        <div class="ui-g-12"></div>
+                    </h:panelGrid>
+                    <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px; margin-left: 20px;">
+                        <p:printer target="blo" />
+                    </p:commandButton>
+                    <h:panelGrid columns="1" id="blo" class="ui-g-12" cellpadding="10" border="1">
+                        <h:panelGrid columns="2" cellpadding="10" >
+                            <f:facet name="header">
+                                <h:outputText value="General Informations"/>
+                            </f:facet>
+                            <c:if test="#{initialInformation.Scrap().size()>0}">
+                                <h:outputText
+                                    value="Nom de l'organisation  "/><h:outputText style="color: #990099" value=" #{initialInformation.Scrap().get(0)}" />
+                                <h:outputText
+                                    value="L'initial du pays  "/><h:outputText style="color: #990099" value=" #{initialInformation.Scrap().get(1)}" />
+                            </c:if>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" cellpadding="10">
+                            <f:facet name="header">
+                                <h:outputText value="Core CS"/>
+                            </f:facet>
+
+                            <c:if test="#{initialInformation.ScrapNode().size()>0}">
+                                <h:outputText
+                                    value="Network Nodes Global Title Number Range(s) : "/>
+                                <f:view>
+                                    <h:form>
+
+                                        <p:dataTable value="#{initialInformation.ScrapNode()}" var="item" class="ui-g-6">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Country Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.countryCode}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="National Destination Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.nationalDestCode}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="SnRangeStart"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.snRangeStart}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="SnRangeStop"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.snRangeStop}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapNumberSeries().size()>0}">
+                                <h:outputText
+                                    value="E. 212 Number series : "/>
+                                <f:view>
+                                    <h:form>
+                                        <p:dataTable value="#{initialInformation.ScrapNumberSeries()}" var="item">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Mobile Country Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.mobileCountryCode}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Mobile Network Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.mobileNetworkCode}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapMobileGlobalTitle().size()>0}">
+                                <h:outputText
+                                    value="E. 214 Mobile Global Title (MGT) : "/>
+                                <f:view>
+
+
+                                    <h:form>
+                                        <p:dataTable value="#{initialInformation.ScrapMobileGlobalTitle()}" var="item">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Country Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.countryCode}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Network Code"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.networkCode}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" cellpadding="10">
+                            <f:facet name="header">
+                                <h:outputText value="Core PS"/>
+                            </f:facet>
+                            <c:if test="#{initialInformation.ScrapAPN().size()>0}">
+                                <h:outputText
+                                    value="List of APN Operator Identifiers : "/>
+                                <h:form>
+                                    <p:dataTable value="#{initialInformation.ScrapAPN()}" var="item">
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="APN Operator Identifier"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.id}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Descreption"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.descreption}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Exemple"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.exemple}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapAPNWeb().size()>0}">
+                                <h:outputText
+                                    value="APN WEB List : "/>
+
+
+                                <h:form>
+                                    <p:dataTable value="#{initialInformation.ScrapAPNWeb()}" var="item">
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Apn"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.apn}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Username"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.username}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Password"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.password}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="ISP DNS IP address (Primary)"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.ispDnsPrim}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="ISP DNS IP address (Secondary)"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.ispDnsSecon}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapGTP().size()>0}">
+                                <h:outputText
+                                    value="GTP Version : "/>
+                                <f:view>
+                                    <h:form>
+                                        <p:dataTable value="#{initialInformation.ScrapGTP()}" var="item">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="SGSN"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.SGSN}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="GGSN"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.GGSN}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapIP().size()>0}">
+                                <h:outputText
+                                    value="List of All IP address ranges used by PMN for connection to inter - PMN IP backbone : "/>
+                                <f:view>
+
+
+                                    <h:form>
+                                        <p:dataTable value="#{initialInformation.ScrapIP()}" var="item">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="IP Address Range"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.IPAddressRange}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                            <c:if test="#{initialInformation.ScrapPMN().size()>0}">
+                                <h:outputText
+                                    value="List of PMN authoritative DNS server IP addresses and name : "/>
+                                <f:view>
+
+
+                                    <h:form>
+                                        <p:dataTable value="#{initialInformation.ScrapPMN()}" var="item">
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="IP Address"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.IPAdresses}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="DNS Name"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.DNSName}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </h:form>
+                                </f:view>
+
+                            </c:if>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </h:form>
+
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+
